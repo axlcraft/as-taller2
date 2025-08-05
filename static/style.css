@@ -1,0 +1,192 @@
+/* Variables CSS y Estilos Generales */
+
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #17a2b8;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+    --text-muted: #6c757d;
+    --bg-light: #f8f9fa;
+    --border-color: #dee2e6;
+    --shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    --shadow-lg: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+body {
+    background-color: var(--bg-light);
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    color: var(--dark-color);
+}
+
+a {
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+/* Componentes de Layout */
+
+.navbar {
+    box-shadow: var(--shadow-sm);
+}
+
+.container {
+    max-width: 1100px;
+}
+
+main {
+    min-height: calc(100vh - 120px); /* Ajusta la altura para que el footer no se superponga */
+    padding-bottom: 2rem;
+}
+
+.breadcrumb-item a {
+    color: var(--secondary-color);
+}
+
+.breadcrumb-item a:hover {
+    color: var(--primary-color);
+}
+
+.footer {
+    background-color: #e9ecef;
+    border-top: 1px solid var(--border-color);
+}
+
+.footer p,
+.footer h6 {
+    font-size: 0.85rem;
+}
+
+
+/* Estilos de los Mensajes Flash */
+
+.alert-container {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    width: 350px;
+    z-index: 1050;
+}
+
+.alert {
+    box-shadow: var(--shadow-sm);
+    border-radius: 0.5rem;
+    animation: fadeInOut 5s forwards;
+    display: flex;
+    align-items: center;
+}
+
+.alert .btn-close {
+    margin-left: auto;
+}
+
+.alert i {
+    font-size: 1.25rem;
+    width: 25px; /* Evita que el texto se mueva con diferentes íconos */
+    text-align: center;
+}
+
+/* Animación para los mensajes que se ocultan */
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(-20px); }
+    10% { opacity: 1; transform: translateY(0); }
+    90% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-20px); }
+}
+
+
+/* Estilos de la Tabla de Tareas */
+
+.table-tasks tbody tr {
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.table-tasks tbody tr:hover {
+    background-color: #e9ecef;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.card-tasks-list {
+    border: none;
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.card-tasks-list .card-header {
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 0.75rem 0.75rem 0 0;
+}
+
+.task-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+}
+
+.task-list-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.badge-status {
+    font-size: 0.85rem;
+    padding: 0.4em 0.8em;
+    border-radius: 50rem;
+    min-width: 80px;
+    text-align: center;
+}
+
+/* TODO: Estado completado */
+.task-completed .badge-status { }
+
+/* TODO: Estado pendiente */
+.task-pending .badge-status { }
+
+/* TODO: Estado vencido */
+.task-overdue .badge-status { }
+
+.task-completed td {
+    text-decoration: line-through;
+    color: var(--text-muted);
+}
+
+.task-actions a {
+    margin-right: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.task-actions a.edit-btn {
+    color: var(--info-color);
+}
+
+.task-actions a.delete-btn {
+    color: var(--danger-color);
+}
+
+/* Estilos del Formulario */
+
+.card-body .form-label {
+    font-weight: 500;
+}
+
+.card-body .form-text {
+    font-size: 0.8rem;
+}
+
+.card-header .card-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--dark-color);
+}
+
+.modal-header .modal-title {
+    font-weight: 600;
+}
+
