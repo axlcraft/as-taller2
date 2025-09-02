@@ -73,9 +73,9 @@ pip install -r requirements.txt
 
 **Objetivo**: Agregar validaciones y mejorar la presentación
 
-- [ ] Validación básica en formularios (campos requeridos, fecha válida)
-- [ ] Plantillas Jinja reutilizables usando `layout.html`
-- [ ] Estilos básicos con CSS o Bootstrap
+- [✓] Validación básica en formularios (campos requeridos, fecha válida)
+- [✓] Plantillas Jinja reutilizables usando `layout.html`
+- [✓] Estilos básicos con CSS o Bootstrap
 
 **Archivos a modificar**: `templates/*.html`, `static/style.css`, `controllers/task_controller.py`
 
@@ -84,7 +84,7 @@ pip install -r requirements.txt
 **Objetivo**: Añadir funcionalidades de filtrado y ordenamiento
 
 - [✓] Filtrar tareas por estado (pendiente, completada)
-- [ ] Ordenar tareas por fecha de vencimiento
+- [✓] Ordenar tareas por fecha de vencimiento
 - [✓] Mostrar tareas vencidas en otro color
 
 **Archivos a modificar**: `controllers/task_controller.py`, `templates/task_list.html`, `static/style.css`

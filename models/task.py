@@ -7,7 +7,6 @@ Este archivo contiene la definición del modelo Task usando SQLAlchemy ORM.
 from datetime import datetime
 from extensions import db
 
-
 class Task(db.Model):
     """
     Modelo para representar una tarea en la aplicación To-Do
@@ -71,13 +70,19 @@ class Task(db.Model):
             return self.due_date < datetime.utcnow()
         return False
 
-    def mark_completed(self):
+    @staticmethod
+    def mark_completed(task):
         """Marca la tarea como completada"""
-        self.completed = True
-    
-    def mark_pending(self):
+        task.completed = True
+        task.updated_at = datetime.utcnow()
+        Task.update_task(task)
+
+    @staticmethod
+    def mark_pending(task):
         """Marca la tarea como pendiente"""
-        self.completed = False
+        task.completed = False
+        task.updated_at = datetime.utcnow()
+        Task.update_task(task)
 
     @staticmethod
     def get_all_tasks():
@@ -118,20 +123,70 @@ class Task(db.Model):
             list: Lista de tareas vencidas
         """
         return Task.query.filter(Task.due_date < datetime.utcnow(), Task.completed == False).all()
+    
+    @staticmethod
+    def sort_tasks_by_due_date(tasks):
+        """
+        Ordena una lista de tareas por fecha de vencimiento.
+
+        Args:
+            tasks (list): Lista de tareas a ordenar.
+
+        Returns:
+            list: Lista de tareas ordenadas por fecha de vencimiento.
+        """
+        return sorted(tasks, key=lambda x: x.due_date or datetime.min)
+
+    @staticmethod
+    def sort_tasks_by_title(tasks):
+        """
+        Ordena una lista de tareas por título.
+
+        Args:
+            tasks (list): Lista de tareas a ordenar.
+
+        Returns:
+            list: Lista de tareas ordenadas por nombre.
+        """
+        return sorted(tasks, key=lambda x: x.title)
+    
+    @staticmethod
+    def sort_tasks_by_creation_date(tasks):
+        """
+        Ordena una lista de tareas por fecha de creación.
+
+        Args:
+            tasks (list): Lista de tareas a ordenar.
+
+        Returns:
+            list: Lista de tareas ordenadas por fecha de creación.
+        """
+        return sorted(tasks, key=lambda x: x.created_at)
 
     @staticmethod
     def get_task(task_id):
         """Obtiene una tarea por su ID"""
         return Task.query.get(task_id)
 
-    def save(self):
+    @staticmethod
+    def save(task):
         """Guarda la tarea en la base de datos"""
-        db.session.add(self)
+        db.session.add(task)
         db.session.commit()
-        db.session.refresh(self)
+        db.session.refresh(task)
+
     @staticmethod
     def delete_task(task_id):
         """Elimina la tarea de la base de datos"""
         task = Task.get_task(task_id)
         if task:
             db.session.delete(task)
+            db.session.commit()
+        return task
+
+    @staticmethod
+    def update_task(task):
+        """Actualiza la tarea en la base de datos"""
+        db.session.commit()
+        db.session.refresh(task)
+

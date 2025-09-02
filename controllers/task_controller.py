@@ -46,6 +46,8 @@ def register_routes(app):
         sort_by = request.args.get('sort', 'created')
 
         tasks = filter_tasks(filter_type)
+        tasks = sort_tasks(sort_by, tasks)
+
 
         # Datos para pasar a la plantilla
         context = {
@@ -59,6 +61,27 @@ def register_routes(app):
 
         return render_template('task_list.html', **context)
 
+    def validate_task_form(form_data):
+        errors = []
+
+        # Validar título
+        title = form_data.get("title", "").strip()
+        if not title:
+            errors.append("El título es obligatorio.")
+        elif len(title) > 200:
+            errors.append("El título no puede superar los 200 caracteres.")
+
+        # Validar fecha (si se proporciona)
+        due_date_str = form_data.get("due_date")
+        due_date = None
+        if due_date_str:
+            try:
+                due_date = datetime.fromisoformat(due_date_str)
+            except ValueError:
+                errors.append("La fecha de vencimiento no es válida.")
+
+        return errors, title, form_data.get("description", ""), due_date
+
     @app.route('/tasks/new', methods=['GET', 'POST'])
     def task_create():
         """
@@ -71,17 +94,17 @@ def register_routes(app):
             str: HTML del formulario o redirección tras crear la tarea
         """
         if request.method == 'POST':
-            task = Task(
-                title=request.form['title'],
-                description=request.form['description'],
-                due_date=datetime.strptime(request.form['due_date'].replace(
-                    'T', ' '), "%Y-%m-%d %H:%M") if request.form['due_date'] else None
-            )
-            db.session.add(task)
-            db.session.commit()
-            db.session.close()
-            flash('Tarea creada con éxito', 'success')
-            return redirect(url_for('task_list'))
+            form_data = request.form
+            errors, title, description, due_date = validate_task_form(form_data)
+            if errors:
+                for err in errors:
+                    flash(err, "error")
+                return render_template("task_form.html", task=None)
+
+            new_task = Task(title=title, description=description, due_date=due_date)
+            Task.save(new_task)
+            flash("Tarea creada con éxito", "success")
+            return redirect(url_for("task_list"))
         elif request.method == 'GET':
             return render_template('task_form.html', action='Crear')
 
@@ -122,13 +145,20 @@ def register_routes(app):
             return redirect(url_for('task_list'))
 
         if request.method == 'POST':
-            request.form['title'] = task.title
-            request.form['description'] = task.description
-            request.form['due_date'] = task.due_date.isoformat(
-            ) if task.due_date else ''
-            db.session.commit()
-            flash('Tarea actualizada con éxito', 'success')
-            return redirect(url_for('task_detail', task_id=task.id))
+            if request.method == 'POST':
+                form_data = request.form.to_dict()
+
+                # Asignar los valores del form al objeto
+                task.title = form_data.get('title', task.title)
+                task.description = form_data.get(
+                    'description', task.description)
+                task.due_date = format_date(form_data.get(
+                    'due_date')) if form_data.get('due_date') else None
+                task.completed = False if 'completed' not in form_data else True
+
+                Task.update_task(task)
+                flash('Tarea actualizada con éxito', 'success')
+                return redirect(url_for('task_detail', task_id=task.id))
         elif request.method == 'GET':
             return render_template('task_form.html', action='Editar', task=task)
 
@@ -143,10 +173,7 @@ def register_routes(app):
         Returns:
             Response: Redirección a la lista de tareas
         """
-        if not Task.delete_task(task_id):
-            flash("Tarea no encontrada", "error")
-        else:
-            flash("Tarea eliminada con éxito", "success")
+        Task.delete_task(task_id)
         return redirect(url_for('task_list'))
 
     @app.route('/tasks/<int:task_id>/toggle', methods=['POST'])
@@ -160,7 +187,13 @@ def register_routes(app):
         Returns:
             Response: Redirección a la lista de tareas
         """
-        pass  # TODO: implementar el método
+        task = Task.get_task(task_id)
+        if task:
+            if task.completed:
+                Task.mark_pending(task)
+            else:
+                Task.mark_completed(task)
+        return redirect(url_for('task_list'))
 
     # Rutas adicionales para versiones futuras
 
@@ -208,3 +241,33 @@ def filter_tasks(filter_type):
     elif filter_type == 'overdue':
         return Task.get_overdue_tasks()
     return Task.get_all_tasks()
+
+
+def format_date(date):
+    """
+    Formatea una fecha en un string legible.
+
+    Args:
+        date (datetime): Fecha a formatear.
+
+    Returns:
+        str: Fecha formateada.
+    """
+    if date:
+        return datetime.fromisoformat(date.replace('T', ' '))
+    return None
+
+def sort_tasks(sort_type, tasks):
+    """
+    Ordena una lista de tareas según el tipo de ordenamiento.
+
+    Args:
+        tasks (list): Lista de tareas a ordenar.
+    """
+    if sort_type == 'date':
+        return Task.sort_tasks_by_due_date(tasks)
+    elif sort_type == 'title':
+        return Task.sort_tasks_by_title(tasks)
+    elif sort_type == 'created_at':
+        return Task.sort_tasks_by_creation_date(tasks)
+    return tasks
