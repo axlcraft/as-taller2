@@ -5,7 +5,7 @@ Este archivo contiene todas las rutas y lógica relacionada con las tareas.
 Representa la capa "Controlador" en la arquitectura MVC.
 """
 
-from flask import render_template, request, redirect, url_for, flash, jsonify
+from flask import render_template, request, redirect, session, url_for, flash, jsonify
 from datetime import datetime
 from models.task import Task
 from extensions import db
@@ -19,7 +19,7 @@ def register_routes(app):
         app (Flask): Instancia de la aplicación Flask
     """
 
-    @app.route('/')
+    @app.route('/tasks/')
     def index():
         """
         Ruta principal - Redirige a la lista de tareas
@@ -29,7 +29,7 @@ def register_routes(app):
         """
         return redirect(url_for('task_list'))
 
-    @app.route('/tasks')
+    @app.route('/tasks_list')
     def task_list():
         """
         Muestra la lista de todas las tareas
@@ -42,12 +42,15 @@ def register_routes(app):
             str: HTML renderizado con la lista de tareas
         """
         # Obtener parámetros de filtro y ordenamiento
+        user_id = session.get("user_id")
+        if not user_id:
+            flash("Debes iniciar sesión para ver tus tareas", "danger")
+            return redirect(url_for("auth.login"))
         filter_type = request.args.get('filter', 'all')
         sort_by = request.args.get('sort', 'created')
 
-        tasks = filter_tasks(filter_type)
+        tasks = filter_tasks(filter_type, user_id)
         tasks = sort_tasks(sort_by, tasks)
-
 
         # Datos para pasar a la plantilla
         context = {
@@ -55,8 +58,8 @@ def register_routes(app):
             'filter_type': filter_type,
             'sort_by': sort_by,
             'total_tasks': len(tasks),
-            'pending_count': len(Task.get_pending_tasks()),
-            'completed_count': len(Task.get_completed_tasks())
+            'pending_count': len(Task.get_pending_tasks(user_id)),
+            'completed_count': len(Task.get_completed_tasks(user_id))
         }
 
         return render_template('task_list.html', **context)
@@ -84,15 +87,6 @@ def register_routes(app):
 
     @app.route('/tasks/new', methods=['GET', 'POST'])
     def task_create():
-        """
-        Crea una nueva tarea
-
-        GET: Muestra el formulario de creación
-        POST: Procesa los datos del formulario y crea la tarea
-
-        Returns:
-            str: HTML del formulario o redirección tras crear la tarea
-        """
         if request.method == 'POST':
             form_data = request.form
             errors, title, description, due_date = validate_task_form(form_data)
@@ -101,12 +95,21 @@ def register_routes(app):
                     flash(err, "error")
                 return render_template("task_form.html", task=None)
 
-            new_task = Task(title=title, description=description, due_date=due_date)
+            user_id = session.get("user_id")
+            if not user_id:
+                flash("Debes iniciar sesión para crear tareas", "danger")
+                return redirect(url_for("auth.login"))
+
+            new_task = Task(
+                title=title,
+                description=description,
+                due_date=due_date,
+                user_id=user_id   
+            )
             Task.save(new_task)
             flash("Tarea creada con éxito", "success")
             return redirect(url_for("task_list"))
-        elif request.method == 'GET':
-            return render_template('task_form.html', action='Crear')
+        return render_template('task_form.html', action='Crear')
 
     @app.route('/tasks/<int:task_id>', methods=['GET', 'POST'])
     def task_detail(task_id):
@@ -224,23 +227,20 @@ def register_routes(app):
         return render_template('500.html'), 500
 
 
-def filter_tasks(filter_type):
+def filter_tasks(filter_type, user_id):
     """
     Filtra la lista de tareas según el tipo de filtro.
 
     Args:
         filter_type (str): Tipo de filtro ('pending', 'completed', 'overdue', 'all').
-
-    Returns:
-        list: Lista de tareas filtradas.
     """
     if filter_type == 'pending':
-        return Task.get_pending_tasks()
+        return Task.get_pending_tasks(user_id)  
     elif filter_type == 'completed':
-        return Task.get_completed_tasks()
+        return Task.get_completed_tasks(user_id)
     elif filter_type == 'overdue':
-        return Task.get_overdue_tasks()
-    return Task.get_all_tasks()
+        return Task.get_overdue_tasks(user_id)
+    return Task.get_all_tasks(user_id)
 
 
 def format_date(date):

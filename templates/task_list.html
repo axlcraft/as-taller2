@@ -10,7 +10,7 @@
 {% block content %}
 <div class="row">
     <div class="col-12">
-        <!-- Header con título y botón de nueva tarea -->
+        <!-- Header con título, usuario, botón de nueva tarea y logout -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h1 class="h2 mb-1">
@@ -21,11 +21,28 @@
                     Gestiona y organiza tus tareas pendientes
                 </p>
             </div>
-            <a href="{{ url_for('task_create') }}" class="btn btn-primary">
-                <i class="fas fa-plus me-2"></i>
-                Nueva Tarea
-            </a>
+
+            <div class="d-flex align-items-center gap-3">
+                <!-- Usuario actual -->
+                <span class="text-muted">
+                    <i class="fas fa-user-circle me-1"></i>
+                    {{ session['username'] }}
+                </span>
+
+                <!-- Botón Nueva tarea -->
+                <a href="{{ url_for('task_create') }}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>
+                    Nueva Tarea
+                </a>
+
+                <!-- Botón Cerrar sesión -->
+                <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-danger">
+                    <i class="fas fa-sign-out-alt me-2"></i>
+                    Cerrar Sesión
+                </a>
+            </div>
         </div>
+
 
         <!-- Estadísticas rápidas -->
         <div class="row mb-4">

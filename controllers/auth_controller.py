@@ -12,15 +12,16 @@ def register():
         email = request.form["email"]
         password = request.form["password"]
 
-        db_session = db.SessionLocal()
+        db_session = db.session
         if db_session.query(User).filter_by(username=username).first():
             flash("El nombre de usuario ya está en uso", "danger")
             return redirect(url_for("auth.register"))
 
         user = User(username=username, email=email)
         user.set_password(password)
-        db.add(user)
-        db.commit()
+
+        db_session.add(user)
+        db_session.commit()
 
         flash("Registro exitoso, ahora puedes iniciar sesión", "success")
         return redirect(url_for("auth.login"))
@@ -35,14 +36,14 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
 
-        db_session = db.SessionLocal()
-        user = db.query(User).filter_by(username=username).first()
+        db_session = db.session
+        user = db_session.query(User).filter_by(username=username).first()
 
         if user and user.check_password(password):
             session["user_id"] = user.id
             session["username"] = user.username
             flash("Sesión iniciada correctamente", "success")
-            return redirect(url_for("index"))
+            return redirect(url_for("task_list"))  # redirige a la lista de tareas
 
         flash("Credenciales inválidas", "danger")
 
